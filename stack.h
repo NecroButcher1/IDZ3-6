@@ -1,6 +1,7 @@
 #ifndef STACK_H_INCLUDED
 #define STACK_H_INCLUDED
 #include <iostream>
+#include <bitset>
 template<typename T>
 class stack{
 private:
@@ -13,17 +14,7 @@ private:
 public:
     stack():ptr(NULL),size(0){};
     stack(stack<T> *tmp){
-        stack<T> tmp1;
-        T value;
-        while(!tmp.empty()){
-            tmp.pop(value);
-            tmp1.push(value);
-            push(value);
-        }
-        while(!tmp1.empty()){
-            tmp1.pop(value);
-            tmp.push(value);
-        }
+        this=tmp;
     }
     void push(T _data){
         node* new_ptr= new node;
@@ -46,7 +37,10 @@ public:
         }
     }
     T top(){return ptr->data;}
-    void doEmpty(){while(!empty())ptr=ptr->next;size=0;}
+    void doEmpty(){
+        while(!empty())ptr=ptr->next;
+        size=0;
+    }
     bool operator==(stack<T> &equal){
         bool eq=false;
         stack<T> tmp1=equal;
@@ -61,20 +55,8 @@ public:
         }
         return eq;
     }
-    void operator=(stack<T> &input){
-        doEmpty();
-        stack<T> tmp1(input);
-        stack<T> tmp2;
-        T value;
-        while(!tmp1.empty()){
-            tmp1.pop(value);
-            tmp2.push(value);
-            push(value);
-        }
-        while(!tmp2.empty()){
-            tmp2.pop(value);
-            tmp1.push(value);
-        }
+    stack operator=(stack<T> *tmp){
+        return tmp;
     }
     bool operator!=(stack<T> *equal){return !operator==(equal);}
     bool empty(){return(!ptr)?true:false;}
